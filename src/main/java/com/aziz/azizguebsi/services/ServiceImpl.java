@@ -12,7 +12,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -40,17 +42,30 @@ public class ServiceImpl implements IService {
     }
 
     @Override
-    public Logistique ajoutAffectLogEvnm(Logistique logistique, String descriptionEvnmt) {
-        return logistiqueRepository.save(logistique);
+    public Logistique ajoutAffectLogEvnm(Logistique l, String descriptionEvnmt) {
+        Evenement evenement = evenementRepository.findByDescription(descriptionEvnmt);
+        if (evenement != null) {
+            evenement.getLogistiques().add(l);
+            evenementRepository.save(evenement);
+        }
+        return logistiqueRepository.save(l);
     }
-
     @Override
     public Set<Logistique> getLogistiquesDate(LocalDate dateDeb, LocalDate dateFin) {
-        return logistiqueRepository.findLogistiqueByEventDates(dateDeb, dateFin);
+        Set<Evenement> events = evenementRepository.findEventsByDateRange(dateDeb, dateFin);
+        Set<Logistique> reservedLogistiques = new HashSet<>();
+        for (Evenement event : events) {
+            for (Logistique logistique : event.getLogistiques()) {
+                if (logistique.isReserve()) {
+                    reservedLogistiques.add(logistique);
+                }
+            }
+        }
+        return reservedLogistiques;
     }
 
     @Override
-    public Set<Participant> getParReservLogis() {
-        return participantRepository.findParticipantsWithReservedLogistics();
+    public List<Participant> getParReservLogis() {
+        return participantRepository.findParticipantsWithNonReservedLogistics();
     }
 }

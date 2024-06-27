@@ -16,5 +16,5 @@ public interface IService {
 
     Set<Logistique> getLogistiquesDate(LocalDate dateDeb, LocalDate dateFin);
 
-    Set<Participant> getParReservLogis();
+    List<Participant> getParReservLogis();
 }

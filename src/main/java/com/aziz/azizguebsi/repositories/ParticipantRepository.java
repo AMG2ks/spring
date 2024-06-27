@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
-    @Query("SELECT DISTINCT p FROM Participant p JOIN p.evenements e JOIN e.logistiques l WHERE l.reserve = true")
-    Set<Participant> findParticipantsWithReservedLogistics();
+    @Query("SELECT DISTINCT p FROM Participant p JOIN p.evenements e LEFT JOIN e.logistiques l WHERE p.tache = 'ORGANISATEUR' AND (l IS NULL OR l.reserve = false)")
+    List<Participant> findParticipantsWithNonReservedLogistics();
+
 }

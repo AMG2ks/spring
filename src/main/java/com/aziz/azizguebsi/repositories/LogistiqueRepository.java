@@ -10,6 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface LogistiqueRepository extends JpaRepository<Logistique, Long> {
-    @Query("select logistique from Logistique logistique JOIN Evenement evenement ON logistique.idLog = evenement.id where evenement.dateDebut < :dateDebut and evenement.dateFin > :dateFin")
-    Set<Logistique> findLogistiqueByEventDates(@Param("dateDebut") LocalDate dateDebut, @Param("dateFin") LocalDate dateFin);
+    @Query("select logistique from Logistique logistique JOIN Evenement evenement ON logistique.idLog = evenement.id where evenement.description = :description")
+    Set<Logistique> findLogistiqueByEvenementDescription(String description);
 }

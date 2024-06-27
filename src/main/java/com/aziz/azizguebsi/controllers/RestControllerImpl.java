@@ -5,12 +5,10 @@ import com.aziz.azizguebsi.models.Logistique;
 import com.aziz.azizguebsi.models.Participant;
 import com.aziz.azizguebsi.services.IService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -37,8 +35,10 @@ public class RestControllerImpl {
     }
 
     @GetMapping("/logistique")
-    void getLogistiquesDate(LocalDate dateDeb, LocalDate dateFin) {
-        service.getLogistiquesDate(dateDeb, dateFin);
+    public Set<Logistique> getLogistiquesDate(
+            @RequestParam("dateDeb") LocalDate dateDeb,
+            @RequestParam("dateFin") LocalDate dateFin) {
+        return service.getLogistiquesDate(dateDeb, dateFin);
     }
 
 

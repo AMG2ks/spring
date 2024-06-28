@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -29,9 +30,9 @@ public class RestControllerImpl {
         service.ajoutAffectLogEvnm(logistique, descriptionEvnmt);
     }
 
-    @GetMapping("/participant")
-    void getParReservLogis() {
-        service.getParReservLogis();
+    @GetMapping("/participants")
+    public List<Participant> getParticipantsWithNonReservedLogistics() {
+        return service.getParReservLogis();
     }
 
     @GetMapping("/logistique")
